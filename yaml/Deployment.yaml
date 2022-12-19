@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cp-terraman-api-deployment
+  labels:
+    app: terraman-api
+  namespace: cp-terraman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cp-terraman-api
+  template:
+    metadata:
+      labels:
+        app: cp-terraman-api
+    spec:
+      containers:
+        - name: cp-terraman-api
+          image: {REPOSITORY_URL}/container-platform-v2/backend/terraman:{IMAGE_TAGS}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8091
+          env:
+            - name: K8S_API_SERVER
+              value: "https://{K8S_MASTER_NODE_IP}:{K8S_API_SERVER_PORT}"
+            - name: DATABASE_URL
+              value: "{DATABASE_URL}"
+            - name: DATABASE_USER_ID
+              value: "{DATABASE_USER_ID}"
+            - name: DATABASE_USER_PASSWORD
+              value: "{DATABASE_USER_PASSWORD}"
+            - name: CP_PORTAL_DB_SCHEMA
+              value: "{CP_PORTAL_DB_SCHEMA}"
+            - name: VAULT_IP
+              value: "{VAULT_IP}"
+            - name: VAULT_PORT
+              value: "{VAULT_PORT}"
+            - name: VAULT_ROLE_ID
+              value: "{VAULT_ROLE_ID}"
+            - name: VAULT_SECRET_ID
+              value: "{VAULT_SECRET_ID}"
+            - name: K8S_MASTER_NODE_IP
+              value: "{K8S_MASTER_NODE_IP}"
+          volumeMounts:
+            - name: master-host-key
+              mountPath: '/home/ubuntu/.ssh/'
+      imagePullSecrets:
+        - name: {IMAGE_PULL_SECRET}
+      volumes:
+        - name: master-host-key
+          hostPath:
+            # directory location on host
+            path: /home/ubuntu/.ssh
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/master
+                    operator: In
+                    values:
+                      - 'master'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cp-terraman-service
+  labels:
+    app: cp-terraman-service
+  namespace: cp-terraman
+spec:
+  ports:
+    - nodePort: {SERVICE_NODEPORT}
+      port: {SERVICE_PORT}
+      protocol: TCP
+      targetPort: {SERVICE_TARGET_PORT}
+  selector:
+    app: cp-terraman-api
+  type: NodePort

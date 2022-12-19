@@ -1,0 +1,124 @@
+spring:
+  application:
+    name: cp-terraman-api
+  cloud:
+    vault:
+      scheme: http
+      host: ${VAULT_IP}
+      port: ${VAULT_PORT}
+      authentication: APPROLE
+      kv:
+        enabled: true
+        backend: secret
+      app-role:
+        role-id: ${VAULT_ROLE_ID}
+        secret-id: ${VAULT_SECRET_ID}
+        role: ${VAULT_ROLE_NAME}
+        app-role-path: approle
+      config:
+        lifecycle:
+          enabled: true
+          min-renewal: 10s
+          expiry-threshold: 1m
+
+project:
+  name: cp-terraman-api
+  artifactId: cp-terraman-api
+  description: API of the PaaS-TA Container Terraman Portal
+
+management:
+  security:
+    enabled: false
+
+master:
+  host: ${K8S_MASTER_NODE_IP}
+
+vault:
+  path:
+    base: "secret/"
+    cluster-token: "secret/cluster/{id}"
+    cluster_api_url: "https://{ip}:6443"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+    driver-class-name: org.mariadb.jdbc.Driver
+    validationQuery: SELECT 1
+    username: ${DATABASE_USER_ID}
+    password: ${DATABASE_USER_PASSWORD}
+    hikari:
+      connectionTimeout: 10000
+      maximumPoolSize: 10
+      maxLifetime: 580000
+      poolName: HikariCP
+      readOnly: false
+      connectionTestQuery: SELECT 1
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+      show_sql: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+logging:
+  level:
+    ROOT: INFO
+  file:
+    path: classpath:logback-spring.xml
+
+server:
+  port: 8091
+  auth:
+    valid: N
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+    driver-class-name: org.mariadb.jdbc.Driver
+    validationQuery: SELECT 1
+    username: ${DATABASE_USER_ID}
+    password: ${DATABASE_USER_PASSWORD}
+    hikari:
+      connectionTimeout: 10000
+      maximumPoolSize: 10
+      maxLifetime: 580000
+      poolName: HikariCP
+      readOnly: false
+      connectionTestQuery: SELECT 1
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: none
+      show_sql: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+logging:
+  level:
+    ROOT: INFO
+  path: classpath:logback-spring.xml
+  file: logs/application.log
+
+server:
+  port: ${PORT:8091}
+  auth:
+    valid: N
