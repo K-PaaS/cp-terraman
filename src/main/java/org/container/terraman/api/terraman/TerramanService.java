@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.container.terraman.api.common.PropertyService;
 import org.container.terraman.api.common.constants.Constants;
 import org.container.terraman.api.common.constants.TerramanConstant;
+import org.container.terraman.api.common.model.AccountModel;
 import org.container.terraman.api.common.model.ClusterModel;
 import org.container.terraman.api.common.model.TerramanCommandModel;
 import org.container.terraman.api.common.service.*;
@@ -25,6 +26,8 @@ public class TerramanService {
     private final ClusterService clusterService;
     private final PropertyService propertyService;
     private final TerramanProcessService terramanProcessService;
+    private final SshKeyService sshKeyService;
+    private final AccountService accountService;
 
     @Autowired
     public TerramanService(
@@ -33,12 +36,16 @@ public class TerramanService {
             , ClusterService clusterService
             , PropertyService propertyService
             , TerramanProcessService terramanProcessService
+            , SshKeyService sshKeyService
+            , AccountService accountService
     ) {
         this.clusterLogService = clusterLogService;
         this.commandService = commandService;
         this.clusterService = clusterService;
         this.propertyService = propertyService;
         this.terramanProcessService = terramanProcessService;
+        this.sshKeyService = sshKeyService;
+        this.accountService = accountService;
     }
 
     /**
@@ -54,12 +61,9 @@ public class TerramanService {
          * 변수 정의
          * ************************************************************************************************************************************/
         String clusterId = terramanRequest.getClusterId();
+        String sshKeyName = terramanRequest.getSshKey();
         int seq = StringUtils.isBlank(String.valueOf(terramanRequest.getSeq())) ? 0 : Integer.parseInt(terramanRequest.getSeq());
         String provider = terramanRequest.getProvider();
-
-        if (provider.equalsIgnoreCase(Constants.UPPER_NAVER)) {
-            provider = TerramanConstant.NCLOUD_USER_NAME;
-        }
 
         String clusterName = "";
 
@@ -69,6 +73,15 @@ public class TerramanService {
         String host = "";
         String idRsa = "";
         String hostDir = "/home/ubuntu";
+
+        host = propertyService.getMasterHost();
+        idRsa = TerramanConstant.MASTER_ID_RSA;
+
+        if (provider.equalsIgnoreCase(Constants.UPPER_NAVER)) {
+            provider = TerramanConstant.NCLOUD_USER_NAME;
+        } else {
+            sshKeyService.createSshKeyFile(sshKeyName, clusterId, host, idRsa);
+        }
 
         ClusterModel clusterModel = clusterService.getCluster(clusterId);
 
@@ -157,14 +170,14 @@ public class TerramanService {
          * 6. Infra 생성 후 생성된 Instance IP 알아오기
          * ************************************************************************************************************************************/
         if(mpSeq > -1) {
-            mpSeq = terramanProcessService.terramanProcessGetInstanceIp(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName, seq);
+            mpSeq = terramanProcessService.terramanProcessGetInstanceIp(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName, seq, sshKeyName);
         }
 
         /**************************************************************************************************************************************
          * 7. Kubespray 다운로드 및 kubespray_var.sh 파일 작성하기
          * ************************************************************************************************************************************/
         if(mpSeq > -1) {
-            mpSeq = terramanProcessService.terramanProcessSetKubespray(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName);
+            mpSeq = terramanProcessService.terramanProcessSetKubespray(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName, sshKeyName);
         }
 
         /**************************************************************************************************************************************
@@ -178,7 +191,7 @@ public class TerramanService {
          * 9. 클러스터 정보 vault 생성
          * ************************************************************************************************************************************/
         if(mpSeq > -1) {
-            mpSeq = terramanProcessService.terramanProcessCreateVault(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName);
+            mpSeq = terramanProcessService.terramanProcessCreateVault(mpSeq, clusterId, processGb, host, idRsa, provider, clusterName, sshKeyName);
         }
 
         /**************************************************************************************************************************************

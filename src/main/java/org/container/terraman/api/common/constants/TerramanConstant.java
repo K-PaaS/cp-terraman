@@ -29,8 +29,13 @@ public class TerramanConstant {
      * ssh conn key
      * */
     public static final String MASTER_ID_RSA = "/home/" + CUSTOM_USER_NAME + "/.ssh/master-key";
-    public static final String CLUSTER_PRIVATE_KEY(String clusterName) {
+
+    /*public static final String CLUSTER_PRIVATE_KEY(String clusterName) {
         return "/home/" + CUSTOM_USER_NAME + "/.ssh/" + clusterName + "-key";
+    }*/
+
+    public static final String CLUSTER_PRIVATE_KEY(String sshKeyName) {
+        return "/home/" + CUSTOM_USER_NAME + "/.ssh/" + sshKeyName + "-key";
     }
     public static final String NCLOUD_PRIVATE_KEY(String clusterName) {
         return "/tmp/terraform/" + clusterName + "/" + clusterName + "-key";
@@ -47,10 +52,15 @@ public class TerramanConstant {
     public static final String NCLOUD_PRI_FILE_PATH(String clusterPath, String clusterId) {
         return clusterPath + "/" + clusterId + "-key";
     }
+    public static final String SSH_KEY_PRI_FILE_PATH(String sshKeyPath, String sshKeyName) {
+        return sshKeyPath + "/" + sshKeyName + "-key";
+    }
     public static final String NCLOUD_PUB_FILE_PATH(String clusterPath, String clusterId) {
         return clusterPath + "/" + clusterId + "-key.pub";
     }
-
+    public static final String SSH_KEY_PUB_FILE_PATH(String sshKeyPath, String sshKeyName) {
+        return sshKeyPath + "/" + sshKeyName + "-key.pub";
+    }
     public static final String NCLOUD_PUB_FILE_PATH(String clusterPath) {
         return clusterPath + "/authorized_keys";
     }
@@ -61,6 +71,10 @@ public class TerramanConstant {
 
     public static final String NCLOUD_PRIVATE_KEY_FILE_PATH(String clusterPath, String clusterId) {
         return clusterPath + "/" + clusterId + "-key";
+    }
+
+    public static final String SUBCLUSTER_PRIVATE_KEY_FILE_PATH(String clusterPath, String sshKeyName) {
+        return clusterPath + "/" + sshKeyName + "-key";
     }
 
 
@@ -126,22 +140,50 @@ public class TerramanConstant {
     /**
      * keys 권한 변경
      * */
-    public static final String NCLOUD_PRIVATE_KEY_CHANGE_MOD(String clusterId){
+    public static final String PRIVATE_KEY_CHANGE_MOD(String clusterId){
         return "chmod 600 " + clusterId + "-key";
     }
 
     /**
-     * keys 문자 치환
+     * keys 권한 변경 600
+     * */
+    public static final String SSH_KEY_CHANGE_MOD_600(String sshKeyName){
+        return "chmod 600 " + sshKeyName + "-key";
+    }
+
+    /**
+     * keys 권한 변경 644
+     * */
+    public static final String SSH_KEY_CHANGE_MOD_644(String sshKeyName){
+        return "chmod 644 " + sshKeyName + "-key.pub";
+    }
+
+    /**
+     * ncloud keys 문자 치환
      * */
     public static final String NCLOUD_PRIVATE_KEY_SED_QUOTES_REPLACE(String clusterId) {
         return "sed -i 's/\"//g' /tmp/terraform/"+ clusterId + "/" + clusterId + "-key";
     }
 
     /**
-     * keys 문자 줄바꿈
+     * ncloud keys 문자 줄바꿈
      * */
     public static final String NCLOUD_PRIVATE_KEY_SED_NEW_LINE(String clusterId){
         return "sed -i 's/,/\\n/g' /tmp/terraform/"+ clusterId + "/" + clusterId + "-key";
+    }
+
+    /**
+     * keys 문자 치환
+     * */
+    public static final String PRIVATE_KEY_SED_QUOTES_REPLACE(String sshKeyName) {
+        return "sed -i 's/\"//g' /home/1000/.ssh/" + sshKeyName + "-key";
+    }
+
+    /**
+     * keys 문자 줄바꿈
+     * */
+    public static final String PRIVATE_KEY_SED_NEW_LINE(String sshKeyName){
+        return "sed -i 's/,/\\n/g' /home/1000/.ssh/" + sshKeyName + "-key";
     }
 
     /**
@@ -154,6 +196,9 @@ public class TerramanConstant {
     public static final String CREATE_NCLOUD_PUBLIC_KEY(String clusterId) {
         return "ssh-keygen -f " + clusterId + "-key -y > authorized_keys";
     };
+    public static final String CREATE_SSH_PUBLIC_KEY(String sshKeyName) {
+        return "ssh-keygen -f " + sshKeyName + "-key -y > " + sshKeyName + "-key.pub";
+    };
     public static final String COPY_NCLOUD_PUBLIC_KEY(String clusterId) {
         return "cp authorized_keys " + clusterId + "-key.pub";
     };
@@ -162,9 +207,16 @@ public class TerramanConstant {
         return "tmp/terraform/" + clusterId;
     }
 
+    public static final String TERRAMAN_IP_SSH_KEY_DIR = "/home/1000/.ssh";
+
+    public static final String TERRAMAN_IP_SSH_KEY(String clusterId) {
+        return  "/home/1000/.ssh/" +  clusterId +"key";
+    }
+
     public static final String MOVE_DIR_CLUSTER(String clusterId) {
         return CLUSTER_STATE_DIR(clusterId);
     }
+
     public static final String DELETE_DIR_CLUSTER = "/home/ubuntu/tmp/terraform";
     public static final String DELETE_CLUSTER(String clusterId) {
         return "rm -r "+clusterId;
@@ -327,13 +379,18 @@ public class TerramanConstant {
             case "17" : switchStr = SERVICE_ACCOUNT_CHECK1; break;
             case "18" : switchStr = SERVICE_ACCOUNT_CHECK2; break;
             case "19" : switchStr = CREATE_DIR_SSH_FILE; break;
-            case "20" : switchStr = NCLOUD_PRIVATE_KEY_CHANGE_MOD(terramanCommandModel.getClusterId()); break;
+            case "20" : switchStr = PRIVATE_KEY_CHANGE_MOD(terramanCommandModel.getClusterId()); break;
             case "21" : switchStr = NCLOUD_PRIVATE_KEY_SED_QUOTES_REPLACE(terramanCommandModel.getClusterId()); break;
             case "22" : switchStr = NCLOUD_PRIVATE_KEY_SED_NEW_LINE(terramanCommandModel.getClusterId()); break;
             case "23" : switchStr = CREATE_NCLOUD_PUBLIC_KEY(terramanCommandModel.getClusterId()); break;
             case "24" : switchStr = COPY_NCLOUD_PUBLIC_KEY(terramanCommandModel.getClusterId()); break;
             case "25" : switchStr = CLUSTER_KUBESPRAY_YAML_FILE_COMMAND(terramanCommandModel.getContents()); break;
             case "26" : switchStr = KUBE_API_SERVER_CHECK; break;
+            case "27" : switchStr = PRIVATE_KEY_SED_QUOTES_REPLACE(terramanCommandModel.getSshKeyName()); break;
+            case "28" : switchStr = PRIVATE_KEY_SED_NEW_LINE(terramanCommandModel.getSshKeyName()); break;
+            case "29" : switchStr = CREATE_SSH_PUBLIC_KEY(terramanCommandModel.getSshKeyName()); break;
+            case "30" : switchStr = SSH_KEY_CHANGE_MOD_600(terramanCommandModel.getSshKeyName()); break;
+            case "31" : switchStr = SSH_KEY_CHANGE_MOD_644(terramanCommandModel.getSshKeyName()); break;
         }
         return switchStr;
     }

@@ -259,7 +259,7 @@ public class TerramanProcessService {
         return mpSeq;
     }
 
-    public int terramanProcessGetInstanceIp(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName, int seq) throws UnsupportedEncodingException {
+    public int terramanProcessGetInstanceIp(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName, int seq, String sshKeyName) throws UnsupportedEncodingException {
         /**************************************************************************************************************************************
          * 6. Infra 생성 후 생성된 Instance IP 알아오기
          *
@@ -292,7 +292,7 @@ public class TerramanProcessService {
             try {
                 terramanCommandModel.setCommand("2");
                 terramanCommandModel.setHost(instanceInfo.getPublicIp());
-                terramanCommandModel.setIdRsa(TerramanConstant.CLUSTER_PRIVATE_KEY(clusterName));
+                terramanCommandModel.setIdRsa(TerramanConstant.CLUSTER_PRIVATE_KEY(sshKeyName));
                 terramanCommandModel.setUserName(TerramanConstant.DEFAULT_USER_NAME);
                 terramanCommandModel.setClusterId(clusterId);
 
@@ -338,7 +338,7 @@ public class TerramanProcessService {
         return mpSeq;
     }
 
-    public int terramanProcessSetKubespray(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName) {
+    public int terramanProcessSetKubespray(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName, String sshKeyName) {
         /**************************************************************************************************************************************
          * 7. Kubespray 다운로드 및 kubespray_var.sh 파일 작성하기
          *
@@ -391,7 +391,7 @@ public class TerramanProcessService {
                 sb.append(line);
             }
 
-            sb.append("\\n\\n" + TerramanConstant.KUBERSPRAY_VARS_PRIVATE_KEY + clusterName + "-key");
+            sb.append("\\n\\n" + TerramanConstant.KUBERSPRAY_VARS_PRIVATE_KEY + sshKeyName + "-key");
 
             terramanCommandModel.setCommand("7");
             terramanCommandModel.setHost(host);
@@ -527,7 +527,7 @@ public class TerramanProcessService {
         return mpSeq;
     }
 
-    public int terramanProcessCreateVault(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName) throws InterruptedException {
+    public int terramanProcessCreateVault(int mpSeq, String clusterId, String processGb, String host, String idRsa, String provider, String clusterName, String sshKeyName) throws InterruptedException {
         /**************************************************************************************************************************************
          * 9. 클러스터 정보 vault 생성
          * clusterId = clusterId
@@ -562,7 +562,7 @@ public class TerramanProcessService {
             terramanCommandModel.setIdRsa(TerramanConstant.NCLOUD_PRIVATE_KEY(clusterName));
         } else {
             terramanCommandModel.setHost(instanceInfo.getPublicIp());
-            terramanCommandModel.setIdRsa(TerramanConstant.CLUSTER_PRIVATE_KEY(clusterName));
+            terramanCommandModel.setIdRsa(TerramanConstant.CLUSTER_PRIVATE_KEY(sshKeyName));
             terramanCommandModel.setUserName(TerramanConstant.DEFAULT_USER_NAME);
         }
         chkCli = commandService.execCommandOutput(terramanCommandModel);

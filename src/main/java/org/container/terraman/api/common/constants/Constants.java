@@ -37,6 +37,7 @@ public class Constants {
     public static final String  RSA_PRIVATE_KEY= "RPK";
 
     public static final String DIV = "/";
+    public static final String DIR_SSH_KEY ="ssh-key/";
 
     public Constants() {
         throw new IllegalStateException();

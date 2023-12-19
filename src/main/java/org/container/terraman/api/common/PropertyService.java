@@ -29,4 +29,7 @@ public class PropertyService {
     @Value("${ncloud.root.password.api.url}")
     private String ncloudRootPasswordApiUrl;
 
+    @Value("${vault.path.ssh-key}")
+    private String cpVaultPathSshKey;
+
 }

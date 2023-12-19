@@ -16,4 +16,14 @@ public class ResultStatusModel {
     private Integer httpStatusCode;
     private String detailMessage;
     private Object out;
+
+    public ResultStatusModel(String resultCode) {
+        this.resultCode = resultCode;
+    }
+
+    public ResultStatusModel() {
+    }
+
+
 }
+

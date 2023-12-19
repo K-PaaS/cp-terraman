@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.bcel.Const;
 import org.container.terraman.api.common.CommonService;
 import org.container.terraman.api.common.PropertyService;
 import org.container.terraman.api.common.VaultService;
@@ -104,6 +105,20 @@ public class TerramanController {
     @PostMapping(value = "/create")
     public void initTerraman(@RequestBody TerramanRequest terramanRequest) throws UnsupportedEncodingException, InterruptedException {
         terramanService.createTerraman(terramanRequest, "Daemon");
+    }
+
+    /**
+     * Terraman 상태 체크(Check Terraman Status) - Daemon 실행
+     *
+     * @return the resultStatus
+     */
+    @ApiOperation(value = "Terraman 생성(Create Terraman) - Daemon 실행", nickname = "initTerraman")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "terramanRequest", value = "Terraman 생성 정보", required = true, dataType = "TerramanRequest", paramType = "body")
+    })
+    @GetMapping(value = "/check")
+    public ResultStatusModel checkTerramanStatus() {
+        return new ResultStatusModel(Constants.RESULT_STATUS_SUCCESS);
     }
 
 //    @ApiOperation(value = "Terraman 생성(Create Terraman) - Daemon 실행", nickname = "initTerraman")
