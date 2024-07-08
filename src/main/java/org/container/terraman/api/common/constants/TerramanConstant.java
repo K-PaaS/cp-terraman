@@ -119,8 +119,8 @@ public class TerramanConstant {
     /**
      * kubespray cluster cp-cluster-terraman-vars.sh 변경 및 실행 명령어
      * */
-    public static final String CLUSTER_KUBESPRAY_YAML_FILE_COMMAND(String contents) {
-        return "echo -e \"" + contents + "\" > /home/ubuntu/cp-deployment/standalone/inventory/mycluster/hosts.yaml";
+    public static final String CLUSTER_KUBESPRAY_YAML_FILE_COMMAND(String contents, String clusterName) {
+        return "echo -e \"" + contents + "\" > /home/ubuntu/cp-deployment/standalone/inventory/mycluster/hosts-" + clusterName + ".yaml";
     }
     public static final String KUBESPRAY_CHMOD_COMMAND = "chmod +x deploy-cp-cluster-terraman.sh";
     public static final String CLUSTER_KUBESPRAY_DEPLOY_COMMAND = "source deploy-cp-cluster-terraman.sh";
@@ -356,6 +356,7 @@ public class TerramanConstant {
     public static final String KUBERSPRAY_VARS_PUBLIC_IP = "_NODE_PUBLIC_IP=";
     public static final String KUBERSPRAY_VARS_PRIVATE_IP = "_NODE_PRIVATE_IP=";
     public static final String KUBERSPRAY_VARS_PRIVATE_KEY = "export CLUSTER_PRIVATE_KEY=";
+    public static final String KUBERSPRAY_VARS_CLUSTER_NAME = "export CLUSTER_NAME=";
 
     public static final String COMMAND_SWITCH(TerramanCommandModel terramanCommandModel) {
         String switchStr = "";
@@ -384,7 +385,7 @@ public class TerramanConstant {
             case "22" : switchStr = NCLOUD_PRIVATE_KEY_SED_NEW_LINE(terramanCommandModel.getClusterId()); break;
             case "23" : switchStr = CREATE_NCLOUD_PUBLIC_KEY(terramanCommandModel.getClusterId()); break;
             case "24" : switchStr = COPY_NCLOUD_PUBLIC_KEY(terramanCommandModel.getClusterId()); break;
-            case "25" : switchStr = CLUSTER_KUBESPRAY_YAML_FILE_COMMAND(terramanCommandModel.getContents()); break;
+            case "25" : switchStr = CLUSTER_KUBESPRAY_YAML_FILE_COMMAND(terramanCommandModel.getContents(), terramanCommandModel.getClusterName()); break;
             case "26" : switchStr = KUBE_API_SERVER_CHECK; break;
             case "27" : switchStr = PRIVATE_KEY_SED_QUOTES_REPLACE(terramanCommandModel.getSshKeyName()); break;
             case "28" : switchStr = PRIVATE_KEY_SED_NEW_LINE(terramanCommandModel.getSshKeyName()); break;

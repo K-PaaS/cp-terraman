@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.container.terraman.api.common.PropertyService;
 import org.container.terraman.api.common.constants.Constants;
 import org.container.terraman.api.common.constants.TerramanConstant;
-import org.container.terraman.api.common.model.AccountModel;
 import org.container.terraman.api.common.model.ClusterModel;
 import org.container.terraman.api.common.model.TerramanCommandModel;
 import org.container.terraman.api.common.service.*;

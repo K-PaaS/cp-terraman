@@ -393,6 +393,8 @@ public class TerramanProcessService {
 
             sb.append("\\n\\n" + TerramanConstant.KUBERSPRAY_VARS_PRIVATE_KEY + sshKeyName + "-key");
 
+            sb.append("\\n\\n" + TerramanConstant.KUBERSPRAY_VARS_CLUSTER_NAME + clusterName);
+
             terramanCommandModel.setCommand("7");
             terramanCommandModel.setHost(host);
             terramanCommandModel.setIdRsa(idRsa);
@@ -427,7 +429,8 @@ public class TerramanProcessService {
                         + "      ansible_host: " + obj.getPublicIp() + "\\n"
                         + "      ip: " + obj.getPrivateIp() + "\\n"
                         + "      access_ip: " + obj.getPrivateIp() + "\\n"
-                        + "      ansible_user: " + username + "\\n";
+                        + "      ansible_user: " + username + "\\n"
+                        + "      ansible_ssh_private_key_file: " + Constants.ROOT_SSH_DIR + sshKeyName + "-key" + "\\n";
                 sb.append(line);
             }
 
@@ -467,6 +470,7 @@ public class TerramanProcessService {
             terramanCommandModel.setIdRsa(idRsa);
             terramanCommandModel.setUserName(TerramanConstant.DEFAULT_USER_NAME);
             terramanCommandModel.setClusterId(clusterId);
+            terramanCommandModel.setClusterName(clusterName);
             terramanCommandModel.setContents(sb.toString());
             cResult = commandService.execCommandOutput(terramanCommandModel);
             if(StringUtils.equals(Constants.RESULT_STATUS_FAIL, cResult)) {

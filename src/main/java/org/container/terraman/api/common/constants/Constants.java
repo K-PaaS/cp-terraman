@@ -24,6 +24,7 @@ public class Constants {
     public static final String MASTER_SSH_DIR ="/home/ubuntu/.ssh";
     public static final String NCLOUD_HOST_DIR ="/home1/ncloud/";
     public static final String NCLOUD_SSH_DIR ="/home1/ncloud/.ssh";
+    public static final String ROOT_SSH_DIR ="~/.ssh/";
 
     public static final String U_LANG_KO = "ko";
 
