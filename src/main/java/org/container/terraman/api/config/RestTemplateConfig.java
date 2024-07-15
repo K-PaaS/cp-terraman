@@ -24,7 +24,7 @@ import java.security.cert.X509Certificate;
  * @since 2020.08.24
  */
 @Configuration
-public class RestTemplageConfig {
+public class RestTemplateConfig {
     /**
      * Rest template rest template
      *

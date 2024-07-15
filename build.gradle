@@ -45,7 +45,6 @@ ext {
     gsonVersion = '2.8.6'
     lombokVersion = '1.18.12'
     jacocoVersion = '0.8.5'
-    swaggerVersion = '2.9.2'
     jjwtVersion = '0.9.1'
     jsonpathVersion = '2.4.0'
     springCloudVersion = '2021.0.3'
@@ -60,23 +59,18 @@ dependencies {
     compileOnly 'com.google.code.findbugs:annotations:3.0.1'
     compileOnly 'com.google.code.findbugs:jsr305:3.0.1'
     compile 'junit:junit:4.13.1'
+    compile 'org.springframework.boot:spring-boot-starter-security'
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile "org.apache.httpcomponents:httpclient:${apacheHttpClientVersion}"
     compile "com.google.code.gson:gson:${gsonVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compile "io.jsonwebtoken:jjwt:${jjwtVersion}"
-    compile("io.springfox:springfox-swagger2:${swaggerVersion}") {
-        exclude module: 'swagger-annotations'
-        exclude module: 'swagger-models'
-    }
-    compile("io.swagger:swagger-annotations:1.5.21")
-    compile("io.swagger:swagger-models:1.5.21")
-    compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
     compile "com.jayway.jsonpath:json-path:${jsonpathVersion}"
     compile 'com.fasterxml.jackson.core:jackson-core'
     compile 'com.fasterxml.jackson.core:jackson-databind'
@@ -91,6 +85,8 @@ dependencies {
     implementation group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.32'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.0'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     compile( "org.springframework.cloud:spring-cloud-starter-vault-config")
 //    implementation "com.jcraft:jsch:${jschVersion}"
     implementation 'commons-io:commons-io:2.11.0'

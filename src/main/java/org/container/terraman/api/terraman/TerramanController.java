@@ -1,18 +1,13 @@
 package org.container.terraman.api.terraman;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.bcel.Const;
 import org.container.terraman.api.common.CommonService;
 import org.container.terraman.api.common.PropertyService;
 import org.container.terraman.api.common.VaultService;
 import org.container.terraman.api.common.constants.Constants;
-import org.container.terraman.api.common.constants.TerramanConstant;
 import org.container.terraman.api.common.model.ResultStatusModel;
-import org.container.terraman.api.common.model.TerramanCommandModel;
 import org.container.terraman.api.common.service.*;
 import org.container.terraman.api.common.util.CommonFileUtils;
 import org.slf4j.Logger;
@@ -21,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 
 /**
  * Terraman Controller 클래스
@@ -34,7 +27,7 @@ import java.lang.reflect.Field;
  */
 @Api(value = "TerramanController v1")
 @RestController
-@RequestMapping(value = "/clusters")
+@RequestMapping( "/clusters")
 public class TerramanController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TerramanController.class);
 
@@ -108,41 +101,13 @@ public class TerramanController {
     }
 
     /**
-     * Terraman 상태 체크(Check Terraman Status) - Daemon 실행
+     * Terraman 상태 체크(Check Terraman Status)
      *
      * @return the resultStatus
      */
-    @ApiOperation(value = "Terraman 생성(Create Terraman) - Daemon 실행", nickname = "initTerraman")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "terramanRequest", value = "Terraman 생성 정보", required = true, dataType = "TerramanRequest", paramType = "body")
-    })
+    @ApiOperation(value = "Terraman 상태 체크(Check Terraman Status)", nickname = "checkTerramanStatus")
     @GetMapping(value = "/check")
     public ResultStatusModel checkTerramanStatus() {
         return new ResultStatusModel(Constants.RESULT_STATUS_SUCCESS);
     }
-
-//    @ApiOperation(value = "Terraman 생성(Create Terraman) - Daemon 실행", nickname = "initTerraman")
-//    @GetMapping(value = "/test")
-//    public void test() {
-//        LOGGER.info("test start");
-//        TerramanCommandModel terramanCommandModel = new TerramanCommandModel();
-//        terramanCommandModel.setClusterId("testClusterId;");
-//        terramanCommandModel.setDir("testDir|");
-//        terramanCommandModel.setUserName("testUserName&");
-//        terramanCommandModel.setIdRsa("testIdRsa\"");
-//
-//        Field[] fields = terramanCommandModel.getClass().getDeclaredFields();
-//        try {
-//            for(Field field : fields){
-//                field.setAccessible(true);
-//                Object obj = field.get(terramanCommandModel);
-//                field.set(terramanCommandModel, String.valueOf(obj).replaceAll("[;|&\"]",""));
-//            }
-//        } catch (Exception e) {
-//            LOGGER.info("Exception : {}", e.getMessage());
-//        }
-//
-//        LOGGER.info("change Object :: {}", terramanCommandModel.toString());
-//
-//    }
 }
