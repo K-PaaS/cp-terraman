@@ -1,6 +1,9 @@
 spring:
   application:
     name: cp-terraman-api
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   cloud:
     vault:
       scheme: http
@@ -28,6 +31,10 @@ project:
 management:
   security:
     enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health
 
 master:
   host: ${K8S_MASTER_NODE_IP}
