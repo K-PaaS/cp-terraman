@@ -417,6 +417,7 @@ public class TerramanProcessService {
             String username = "";
             if (provider.equalsIgnoreCase(Constants.UPPER_NCLOUD)) {
                 username = TerramanConstant.NCLOUD_USER_NAME;
+                sshKeyName = clusterName;
             } else {
                 username = TerramanConstant.DEFAULT_USER_NAME;
             }

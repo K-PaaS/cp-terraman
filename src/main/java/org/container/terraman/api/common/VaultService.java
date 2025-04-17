@@ -34,9 +34,9 @@ public class VaultService {
     public <T> T read(String path,  Class<T> requestClass) {
         path = setPath(path);
 
-        Object response = Optional.ofNullable(vaultTemplate.read(path))
+        Object response = Optional.of(vaultTemplate.read(path))
                 .map(VaultResponse::getData)
-                .filter(x -> x.keySet().contains("data"))
+                .filter(x -> x.containsKey("data"))
                 .orElseGet(HashMap::new)
                 .getOrDefault("data", null);
 
@@ -63,7 +63,6 @@ public class VaultService {
      * Vault delete를 위한 method
      *
      * @param path the path
-     * @return the object
      */
     public void delete(String path){
         path = setPath(path);

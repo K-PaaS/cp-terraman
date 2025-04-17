@@ -3,16 +3,16 @@
 <table>
 <thead>
   <tr>
-    <th>플랫폼</th>
-    <th><a href="https://github.com/K-PaaS/cp-deployment">컨테이너 플랫폼</a></th>
-    <th>&nbsp;&nbsp;&nbsp;<a href="https://github.com/K-PaaS/sidecar-deployment.git">사이드카</a>&nbsp;&nbsp;&nbsp;</th>
+    <th style="text-align:center;width=100;">플랫폼</th>
+    <th style="text-align:center;width=250;"><a href="https://github.com/K-PaaS/cp-deployment">컨테이너 플랫폼</a></th>
+    <th style="text-align:center;width=250;">&nbsp;&nbsp;&nbsp;<a href="https://github.com/K-PaaS/sidecar-deployment.git">사이드카</a>&nbsp;&nbsp;&nbsp;</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td align="center">포털</td>
     <td align="center"><a href="https://github.com/K-PaaS/cp-portal-release">CP 포털</a></td>
-    <td align="center">-</td>
+    <td align="center"><a href="https://github.com/K-PaaS/sidecar-deployment/tree/master/install-scripts/portal">사이드카 포털</a></td>
   </tr>
   <tr>
     <td rowspan="8">Component <br>/서비스</td>
@@ -32,7 +32,7 @@
     <td align="center"></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/K-PaaS/cp-terraman">🚩Terraman API</a></td>
+    <td align="center"><a href="https://github.com/K-PaaS/cp-terraman">🚩 Terraman API</a></td>
     <td align="center"></td>
   </tr>
   <tr>
@@ -48,9 +48,9 @@
     <td align="center"></td>
   </tr>
 </tbody></table>
-
 <i>🚩 You are here.</i>
 
+<br>
 <br>
 
 ## K-PaaS 컨테이너 플랫폼 Terraman API
@@ -83,18 +83,20 @@ $ gradle build
 ## 개발 환경
 K-PaaS 컨테이너 플랫폼 Terraman API의 개발 환경은 다음과 같습니다.
 
-| Situation                      | Version |
-| ------------------------------ |---------|
-| JDK                            | 8       |
-| Gradle                         | 7.5     |
-| Spring Boot                    | 2.7.3   |
-| Spring Boot Management         | 1.0.11  |
-| ApacheHttpClient               | 4.5.12  |
-| JJWT                           | 0.9.1   |
-| Gson                           | 2.8.6   |
-| Lombok		                  | 1.18.12 |
-| Jacoco		                  | 0.8.5   |
-| Swagger	                      | 2.9.2   |
+| Situation              | Version |
+|------------------------|---------|
+| JDK                    | 17      |
+| Gradle                 | 8.10.0  |
+| Spring Boot            | 3.4.4   |
+| Spring Boot Management | 1.1.7   |
+| Spring Cloud Dependencies | 2024.0.0|
+| Tomcat Embed Core      | 10.1.39 |
+| httpclient5            | 5.4.2   |
+| JJWT                   | 0.9.1   |
+| Gson                   | 2.8.9   |
+| Lombok                 | 1.18.36 |
+| springdoc-openapi      | 2.8.4   |
+
 
 <br>
 
