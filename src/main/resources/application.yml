@@ -2,6 +2,8 @@ spring:
   application:
     name: cp-terraman-api
   security:
+    basic:
+      enabled: false
     username: admin
     password: cpterraman!123
   mvc:
@@ -54,26 +56,32 @@ ncloud:
     password:
       api:
         url: "https://ncloud.apigw.gov-ntruss.com/vserver/v2/getRootPassword"
+
+logging:
+  config: classpath:logback-spring.xml
 ---
 spring:
   config:
     activate:
       on-profile: local
   datasource:
-    jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-    driver-class-name: org.mariadb.jdbc.Driver
-    validationQuery: SELECT 1
-    username: ${DATABASE_USER_ID}
-    password: ${DATABASE_USER_PASSWORD}
-    hikari:
-      connectionTimeout: 10000
-      maximumPoolSize: 10
-      maxLifetime: 580000
-      poolName: HikariCP
-      readOnly: false
-      connectionTestQuery: SELECT 1
+    cp:
+      jdbc-url: jdbc:mariadb://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+      driver-class-name: org.mariadb.jdbc.Driver
+      validationQuery: SELECT 1
+      username: ${DATABASE_USER_ID}
+      password: ${DATABASE_USER_PASSWORD}
+      hikari:
+        connectionTimeout: 10000
+        maximumPoolSize: 10
+        maxLifetime: 580000
+        poolName: HikariCP
+        readOnly: false
+        connectionTestQuery: SELECT 1
   jpa:
     database: mysql
+    show_sql: true
+    open-in-view: false
     hibernate:
       ddl-auto: none
       show_sql: true
@@ -83,13 +91,14 @@ spring:
     generate-ddl: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+        transaction:
+          jta:
+            platform: org.hibernate.service.jta.JtaPlatform
 
 logging:
-  level:
-    ROOT: INFO
   file:
-    path: classpath:logback-spring.xml
+    path: logs
 
 server:
   port: 8091
@@ -98,40 +107,46 @@ server:
 
 ---
 spring:
+  security:
+    basic:
+      enabled: false
   config:
     activate:
       on-profile: prod
   datasource:
-    jdbc-url: jdbc:mysql://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-    driver-class-name: org.mariadb.jdbc.Driver
-    validationQuery: SELECT 1
-    username: ${DATABASE_USER_ID}
-    password: ${DATABASE_USER_PASSWORD}
-    hikari:
-      connectionTimeout: 10000
-      maximumPoolSize: 10
-      maxLifetime: 580000
-      poolName: HikariCP
-      readOnly: false
-      connectionTestQuery: SELECT 1
+    cp:
+      jdbc-url: jdbc:mariadb://${DATABASE_URL}/cp?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+      driver-class-name: org.mariadb.jdbc.Driver
+      validationQuery: SELECT 1
+      username: ${DATABASE_USER_ID}
+      password: ${DATABASE_USER_PASSWORD}
+      hikari:
+        connectionTimeout: 10000
+        maximumPoolSize: 10
+        maxLifetime: 580000
+        poolName: HikariCP
+        readOnly: false
+        connectionTestQuery: SELECT 1
   jpa:
     database: mysql
+    show_sql: true
+    open-in-view: false
     hibernate:
       ddl-auto: none
-      show_sql: true
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     generate-ddl: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+        transaction:
+          jta:
+            platform: org.hibernate.service.jta.JtaPlatform
 
 logging:
-  level:
-    ROOT: INFO
-  path: classpath:logback-spring.xml
-  file: logs/application.log
+  file:
+    path: /home/1000/logs
 
 server:
   port: ${PORT:8091}

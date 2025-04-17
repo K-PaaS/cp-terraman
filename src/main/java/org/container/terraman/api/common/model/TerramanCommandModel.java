@@ -19,4 +19,6 @@ public class TerramanCommandModel {
     private String contents = Constants.EMPTY_STRING;
     private String instanceKey = Constants.EMPTY_STRING;
     private String provider = Constants.EMPTY_STRING;
+    private String namespace = Constants.EMPTY_STRING;
+    private String resourceName = Constants.EMPTY_STRING;
 }

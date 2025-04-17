@@ -27,7 +27,7 @@ public class GsonConfig {
      * @return the gson builder
      */
     @Bean
-    @Autowired
+    //@Autowired
     public Gson gson(GsonBuilder builder) {
         return builder.create();
     }

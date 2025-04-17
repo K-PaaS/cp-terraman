@@ -3,7 +3,7 @@ package org.container.terraman.api.common.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @IdClass(ClusterLogEmbededModel.class)
 @Entity
