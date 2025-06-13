@@ -40,7 +40,6 @@ public class Constants {
     public static final String DIV = "/";
     public static final String DIR_SSH_KEY ="ssh-key/";
 
-    public static final String TAG_ROLL_BACK ="rollBack";
 
     public Constants() {
         throw new IllegalStateException();

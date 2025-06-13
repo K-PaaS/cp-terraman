@@ -238,13 +238,6 @@ public class TerramanConstant {
 //    }
 
     /**
-     * roll back 명령어
-     * */
-    public static final String KUBE_CTL_ROLL_OUT(String namespace, String resourceName){
-        return "kubectl rollout undo deployment/"+ resourceName + " -n " + namespace;
-    }
-
-    /**
      * .tf 파일 복사 명령어
      * */
     public static  final String POD_NAME_COMMAND = "kubectl get pods -n cp-portal -l app=cp-portal-api --field-selector=status.phase=Running -o custom-columns=:metadata.name | grep 'cp-portal-api-deployment'";
@@ -399,7 +392,6 @@ public class TerramanConstant {
             case "29" : switchStr = CREATE_SSH_PUBLIC_KEY(terramanCommandModel.getSshKeyName()); break;
             case "30" : switchStr = SSH_KEY_CHANGE_MOD_600(terramanCommandModel.getSshKeyName()); break;
             case "31" : switchStr = SSH_KEY_CHANGE_MOD_644(terramanCommandModel.getSshKeyName()); break;
-            case "32" : switchStr = KUBE_CTL_ROLL_OUT(terramanCommandModel.getNamespace(), terramanCommandModel.getResourceName()); break;
         }
         return switchStr;
     }
