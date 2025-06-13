@@ -35,7 +35,6 @@ public class TerramanController {
     private final CommonService commonService;
     private final VaultTemplate vaultTemplate;
     private final TerramanService terramanService;
-    private final PortalRequestService portalRequestService;
     private final CommonFileUtils commonFileUtils;
     private final ClusterService clusterService;
     private final ClusterLogService clusterLogService;
@@ -51,7 +50,6 @@ public class TerramanController {
     public TerramanController(
             CommonService commonService
             , TerramanService terramanService
-            , PortalRequestService portalRequestService
             , CommonFileUtils commonFileUtils
             , ClusterService clusterService
             , ClusterLogService clusterLogService
@@ -62,7 +60,6 @@ public class TerramanController {
             , CommandService commandService) {
         this.commonService = commonService;
         this.terramanService = terramanService;
-        this.portalRequestService = portalRequestService;
         this.commonFileUtils = commonFileUtils;
         this.clusterService = clusterService;
         this.clusterLogService = clusterLogService;
@@ -113,18 +110,4 @@ public class TerramanController {
         return new ResultStatusModel(Constants.RESULT_STATUS_SUCCESS);
     }
 
-    /**
-     * Portal 요청(Request Portal)
-     *
-     * @param portalRequestParams the terramanRequestParams
-     * @return the resultStatus
-     */
-    @Operation(summary = "Portal 요청(Request Portal)", operationId = "requestFromPortal")
-    @Parameters({
-            @Parameter(name = "portalRequestParams", description = "portal 요청 파라미터", required = true, schema = @Schema(implementation = PortalRequestParams.class)),
-    })
-    @PostMapping(value = "/request")
-    public void requestFromPortal(@RequestBody PortalRequestParams portalRequestParams) {
-        portalRequestService.portalRequest(portalRequestParams);
-    }
 }
